@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>7-Day Weather Forecast</title>
+  <link rel="stylesheet" href="/style.css">
+  <script>
+    function toggleMode() {
+      document.body.classList.toggle("dark-mode");
+    }
+  </script>
+</head>
+<body>
+  <div class="container animated-border">
+    <h1>7-Day Weather Forecast</h1>
+    <button onclick="toggleMode()">Toggle Light/Dark Mode</button>
+    <form action="/get-forecast" method="POST">
+      <input type="text" name="cityState" id="cityState" placeholder="e.g. Mumbai, IN" required>
+      <button type="submit">Get Forecast</button>
+    </form>
+
+    <% if (location) { %>
+      <h2><%= location %></h2>
+    <% } %>
+
+    <% if (uvIndex !== null) { %>
+      <div class="uv">
+        <p>🌞 <strong>UV Index:</strong> <%= uvIndex %></p>
+      </div>
+    <% } %> 
+
+    <% if (forecast) { %>
+      <div class="forecast">
+        <% forecast.forEach((day) => { %>
+          <div class="day">
+            <p><strong><%= day.readableDate %></strong></p>
+            <p><img src="/icons/<%= day.weather[0].main.toLowerCase() %>.png" alt="icon" class="weather-icon"></p>
+            <p>🌡 Temp: <%= day.temp.day %> °C</p>
+            <p>⬆ Max: <%= day.temp.max %> °C | ⬇ Min: <%= day.temp.min %> °C</p>
+            <p>💨 Wind: <%= day.wind_speed %> m/s</p>
+            <p>☁️ Weather: <%= day.weather[0].description %></p>
+            <p>💧 Humidity: <%= day.humidity %>%</p>
+          </div>
+        <% }) %>
+      </div>
+    <% } %>
+
+    <% if (error) { %>
+      <div class="error"><%= error %></div>
+    <% } %>
+  </div>
+</body>
+</html>
