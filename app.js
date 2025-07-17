@@ -1,6 +1,8 @@
 import express from "express";
 import axios from "axios";
 import bodyParser from "body-parser";
+import dotenv from "dotenv";
+dotenv.config();
 
 const app = express();
 const port = 3000;
@@ -9,7 +11,7 @@ app.use(express.static("public"));
 app.use(bodyParser.urlencoded({ extended: true }));
 app.set("view engine", "ejs");
 
-const OPENWEATHER_API_KEY = "70ade6da5e1c55d3ec7211b2e1ab702d";
+const OPENWEATHER_API_KEY = process.env.API_KEY;
 
 app.get("/", (req, res) => {
   res.render("forecast", { location: null, forecast: null, uvIndex: null, error: null });
